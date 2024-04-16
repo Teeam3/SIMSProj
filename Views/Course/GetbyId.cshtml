@@ -1,0 +1,73 @@
+﻿@model democode.Models.Course
+@using Newtonsoft.Json
+@using System.Web
+@{
+    ViewData["Title"] = "Details";
+    var httpContext = Context.Request.HttpContext;
+    var courseJson = System.IO.File.ReadAllText("courses.json");
+    var courses = courseJson != null ? JsonConvert.DeserializeObject<List<Course>>(courseJson) : null;
+    var userJsonfile = System.IO.File.ReadAllText("json.json");
+    var users = userJsonfile != null ? JsonConvert.DeserializeObject<List<User>>(userJsonfile) : null;
+    var userJson = httpContext.Session.GetString("User");
+    var cUser = userJson != null ? JsonConvert.DeserializeObject<User>(userJson) : null;
+
+}
+<div>
+    <h4>Courses</h4>
+    <hr />
+    @foreach(var course in courses)
+    {
+        
+        @if (course.Id == Model.Id)
+        {
+            <div>
+                <label>Id: @course.Id</label><br />
+                <label>Name: @course.Name</label>
+            </div>
+            @if (cUser.Role == UserRole.Admin)
+            {
+               <h2>Student</h2>
+            <table class="col-4">
+               <tr>
+                   <th>Id</th>
+                   <th>Name</th>
+                   <th>Email</th>
+               </tr>
+               
+                @foreach(var user in users)
+                {
+                    if (user.Role == UserRole.Student && user.Course == course.Name)
+                    {
+                        <tr>
+                            <td>@user.Id</td>
+                            <td>@user.Name</td>
+                            <td>@user.Email</td>
+                        </tr>
+                    }
+                }
+                
+
+            </table>
+                }
+            <h2 class="">Teacher</h2>
+            <table class="col-4">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+                @foreach (var user in users)
+                {
+                    if (user.Role == UserRole.Teacher && user.Course == course.Name)
+                    {
+                        <tr>
+                            <td>@user.Id</td>
+                            <td>@user.Name</td>
+                            <td>@user.Email</td>
+                        </tr>
+                    }
+                }
+            </table>
+        }
+    }
+</div>

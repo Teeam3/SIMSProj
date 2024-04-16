@@ -1,0 +1,39 @@
+﻿@using Newtonsoft.Json
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var httpContext = Context.Request.HttpContext;
+    var courseJson = System.IO.File.ReadAllText("courses.json");
+    var userJson = httpContext.Session.GetString("User");
+    var user = userJson != null ? JsonConvert.DeserializeObject<User>(userJson) : null;
+    var courses = courseJson != null ? JsonConvert.DeserializeObject<List<Course>>(courseJson) : null;
+}
+<div class="box-container">
+    <p class="m-5 text-right">
+        @if(user.Role == UserRole.Admin)
+        {
+            <a asp-action="Add" asp-controller="Course" class="btn btn-primary" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">AddCourse</a>
+            <a asp-action="Update" asp-controller="Course" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Update</a>
+            <a asp-action="GetAll" asp-controller="Course" class="btn btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">GetAll</a>
+        }
+        
+    </p>
+    <div class="d-flex justify-content-between">
+        @foreach(var course in courses)
+        {
+            <div class="box">
+                <div class="tutor">
+                    <img src="images/pic-2.jpg" alt="">
+                    <div class="info">
+                        <h3>@course.Teachers.FirstOrDefault()</h3>
+                        <span>21-10-2024</span>
+                    </div>
+                </div>
+                <div class="thumb">
+                    <img src="" alt="">
+                </div>
+                <h3 class="title">@course.Name</h3>
+                <a asp-action="GetById" asp-controller="Course" asp-route-id="@course.Id" class="inline-btn">view Course</a>
+            </div>
+        }
+    </div>
+</div>

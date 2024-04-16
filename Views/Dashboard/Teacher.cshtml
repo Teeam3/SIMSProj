@@ -1,0 +1,35 @@
+﻿@using Newtonsoft.Json
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var httpContext = Context.Request.HttpContext;
+    var userJson = System.IO.File.ReadAllText("json.json");
+    var users = userJson != null ? JsonConvert.DeserializeObject<List<User>>(userJson) : null;
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">User Accounts</h2>
+
+    <h3>Dark Header</h3>
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Course</th>
+        </tr>
+        @foreach (var user in users)
+        {
+            if (user.Role == UserRole.Teacher)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td>@user.Course</td>
+                    <td><a asp-action="Update" asp-controller="User" asp-route-id="@user.Id">Edit</a></td>
+                    <td><a asp-action="Delete" asp-controller="User" asp-route-id="@user.Id">Remove</a></td>
+                </tr>
+            }
+        }
+    </table>
+</div>

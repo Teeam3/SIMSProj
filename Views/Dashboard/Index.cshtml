@@ -1,0 +1,199 @@
+﻿@using Newtonsoft.Json
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var httpContext = Context.Request.HttpContext;
+    var userJson = httpContext.Session.GetString("User");
+    var user = userJson != null ? JsonConvert.DeserializeObject<User>(userJson) : null;
+}
+<h1>
+	<a class="navbar-brand" href="index.html">
+
+	</a>
+</h1>
+<!-- if logo is image enable this
+<a class="navbar-brand" href="#index.html">
+	<img src="image-path" alt="Your logo" title="Your logo" style="height:35px;" />
+</a> -->
+<button class="navbar-toggler  collapsed bg-gradient" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+	<span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
+	<span class="navbar-toggler-icon fa icon-close fa-times"></span>
+</button>
+<nav class="navbar navbar-expand-lg navbar-dark stroke">
+    <div class="dashboard">
+        <ul class="navbar-nav ml-auto">
+        @if (user != null)
+        {
+			<li class="nav-item @@about__active">
+            <a class="nav-link text-black" href="@Url.Action("Course", "Dashboard")">Course</a>
+			</li>
+			<li class="nav-item @@about__active">
+				<a class="nav-link text-black" asp-action="Information", asp-controller="Dashboard" asp-route-id="@user.Id">Information</a>
+			</li>
+            if (user.Role == UserRole.Admin)
+            {
+				<li class="nav-item @@about__active">
+				<a class="nav-link text-black" href="@Url.Action("Teacher", "Dashboard")">Teacher</a>
+				</li>
+				<li class="nav-item @@about__active">
+				<a class="nav-link text-black" href="@Url.Action("Student", "Dashboard")">Student</a>
+				</li>
+				
+            }
+            else if (user.Role == UserRole.Teacher)
+            {
+				<li class="nav-item @@about__active">
+					<a class="nav-link text-black" href="@Url.Action("Student", "Dashboard")">Student</a>
+				</li>
+            }
+        }
+			<a class="nav-link text-black" href="@Url.Action("Logout", "User")">Logout</a>
+        </ul>
+
+    </div>
+</nav>
+<script src="assets/js/jquery-3.3.1.min.js"></script> <!-- Common jquery plugin -->
+<!--bootstrap working-->
+<script src="assets/js/bootstrap.min.js"></script>
+<!--bootstrap working//-->
+<!--/MENU-JS-->
+<script>
+	$(window).on("scroll", function () {
+		var scroll = $(window).scrollTop();
+
+		if (scroll >= 80) {
+			$("#site-header").addClass("nav-fixed");
+		} else {
+			$("#site-header").removeClass("nav-fixed");
+		}
+	});
+
+	//Main navigation Active Class Add Remove
+	$(".navbar-toggler").on("click", function () {
+		$("header").toggleClass("active");
+	});
+	$(document).on("ready", function () {
+		if ($(window).width() > 991) {
+			$("header").removeClass("active");
+		}
+		$(window).on("resize", function () {
+			if ($(window).width() > 991) {
+				$("header").removeClass("active");
+			}
+		});
+	});
+</script>
+<!--//MENU-JS-->
+<!-- disable body scroll which navbar is in active -->
+<script>
+	$(function () {
+		$('.navbar-toggler').click(function () {
+			$('body').toggleClass('noscroll');
+		})
+	});
+</script>
+<!-- disable body scroll which navbar is in active -->
+<!--theme switcher dark and light mode script-->
+<script>
+	const bodyElement = document.querySelector('body');
+	const themeToggle = document.querySelector('#themeToggle');
+	const darkModeMql = window.matchMedia('(prefers-color-scheme: dark)');
+
+	const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : userPreference(darkModeMql);
+
+	if (currentTheme) {
+		bodyElement.classList.add(currentTheme);
+
+		if (currentTheme === 'dark') {
+			themeToggle.checked = true;
+		}
+	}
+
+	function userPreference(e) {
+		if (e.matches) {
+			bodyElement.classList.add("dark");
+			return "dark"
+		} else {
+			bodyElement.classList.remove("dark");
+			return ""
+		}
+	}
+
+	darkModeMql.addListener(userPreference);
+
+	function themeSwitcher(e) {
+		if (e.target.checked) {
+			bodyElement.classList.add('dark');
+			localStorage.setItem('theme', 'dark');
+		} else {
+			bodyElement.classList.remove('dark');
+			localStorage.setItem('theme', '');
+		}
+	}
+
+	themeToggle.addEventListener('change', themeSwitcher);
+</script>
+<!--theme switcher dark and light mode script//-->
+
+
+<section class="w3l-hero-headers-9" id="home">
+	<div class="slide header11" data-selector="header11">
+		<div class="container">
+			<div class="banner-text ">
+				<h5 class=" ">Present Education<br> in beautiful way!</h5>
+				<p class=" ">Adipi sicing elit. Quia, aliquid voluptatum corporis Dicta. Deleniti possimus culpa nemo asperiores aperiam mollitia, maiores Lorem ipsum dolor.</p>
+
+			</div>
+		</div>
+	</div>
+</section>
+
+
+
+<!-- move top -->
+
+<script>
+	// When the user scrolls down 20px from the top of the document, show the button
+	window.onscroll = function () {
+		scrollFunction()
+	};
+
+	function scrollFunction() {
+		if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+			document.getElementById("movetop").style.display = "block";
+		} else {
+			document.getElementById("movetop").style.display = "none";
+		}
+	}
+
+	// When the user clicks on the button, scroll to the top of the document
+	function topFunction() {
+		document.body.scrollTop = 0;
+		document.documentElement.scrollTop = 0;
+	}
+</script>
+<style>
+    /* CSS */
+    .dashboard {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .dashboard a {
+        text-decoration: none;
+        color: #000;
+        width: 25%;
+        padding: 20px;
+        margin: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .dashboard a[href*="Logout"] {
+        font-size: 16px; /* Adjust size as needed */
+        padding: 15px; /* Adjust padding around button */
+        margin-left: auto; /* Push button to right corner */
+        margin-top: 10px; /* Create space with other buttons */
+    }
+</style>

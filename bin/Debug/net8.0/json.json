@@ -1,0 +1,34 @@
+[
+  {
+    "Id": "a",
+    "Email": "admin1@example.com",
+    "Password": "password1",
+    "Role": 0,
+    "Name": "Admin1",
+    "Course": "IT"
+  },
+  {
+    "Id": "a",
+    "Email": "admin1@example.com",
+    "Password": "password1",
+    "Role": 0,
+    "Name": "Admin1",
+    "Course": "IT"
+  },
+  {
+    "Id": "t",
+    "Email": "teacher3@gmail.com",
+    "Password": "password2",
+    "Role": 1,
+    "Name": "teacher2",
+    "Course": "tet"
+  },
+  {
+    "Id": "1",
+    "Email": "stude@example.com",
+    "Password": "123456789",
+    "Role": 2,
+    "Name": "Student2",
+    "Course": "tanhbeos29"
+  }
+]
